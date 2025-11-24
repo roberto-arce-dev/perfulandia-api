@@ -495,6 +495,95 @@
           }
         }
       ]
+    },
+    {
+      "name": "Perfume",
+      "item": [
+        {
+          "name": "Perfumes por Categoría",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/categoria/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "categoria",
+                "{{categoriaId}}"
+              ]
+            },
+            "description": "Filtrar perfumes por categoría"
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar Perfumes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/filtros?genero={{genero}}&fragancia={{fragancia}}&tamaño={{tamaño}}&precioMin={{precioMin}}&precioMax={{precioMax}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "filtros?genero={{genero}}&fragancia={{fragancia}}&tamaño={{tamaño}}&precioMin={{precioMin}}&precioMax={{precioMax}}"
+              ]
+            },
+            "description": "Filtrar perfumes por múltiples criterios"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints específicos de Perfume"
+    },
+    {
+      "name": "Reseña",
+      "item": [
+        {
+          "name": "Reseñas por Perfume",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resena/perfume/{{perfumeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "perfume",
+                "{{perfumeId}}"
+              ]
+            },
+            "description": "Obtener todas las reseñas de un perfume"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints específicos de Reseña"
     }
   ],
   "variable": [

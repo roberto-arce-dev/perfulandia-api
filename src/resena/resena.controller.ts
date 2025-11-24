@@ -102,6 +102,24 @@ export class ResenaController {
     return { success: true, data, total: data.length };
   }
 
+  @Get('perfume/:perfumeId')
+  @ApiOperation({ summary: 'Obtener reseñas de un perfume' })
+  @ApiParam({ name: 'perfumeId', description: 'ID del perfume' })
+  @ApiResponse({ status: 200, description: 'Lista de reseñas del perfume' })
+  async findByPerfume(@Param('perfumeId') perfumeId: string) {
+    const data = await this.resenaService.findByPerfume(perfumeId);
+    return { success: true, data, total: data.length };
+  }
+
+  @Get('cliente/:clienteId')
+  @ApiOperation({ summary: 'Obtener reseñas de un cliente' })
+  @ApiParam({ name: 'clienteId', description: 'ID del cliente' })
+  @ApiResponse({ status: 200, description: 'Lista de reseñas del cliente' })
+  async findByCliente(@Param('clienteId') clienteId: string) {
+    const data = await this.resenaService.findByCliente(clienteId);
+    return { success: true, data, total: data.length };
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtener Resena por ID' })
   @ApiParam({ name: 'id', description: 'ID del Resena' })

@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  Query,
   BadRequestException,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
@@ -99,6 +100,30 @@ export class PerfumeController {
   @ApiResponse({ status: 200, description: 'Lista de Perfumes' })
   async findAll() {
     const data = await this.perfumeService.findAll();
+    return { success: true, data, total: data.length };
+  }
+
+  @Get('categoria/:categoriaId')
+  @ApiOperation({ summary: 'Filtrar perfumes por categoría' })
+  @ApiParam({ name: 'categoriaId', description: 'ID de la categoría' })
+  @ApiResponse({ status: 200, description: 'Lista de perfumes por categoría' })
+  async findByCategoria(@Param('categoriaId') categoriaId: string) {
+    const data = await this.perfumeService.findByCategoria(categoriaId);
+    return { success: true, data, total: data.length };
+  }
+
+  @Get('filtros')
+  @ApiOperation({ summary: 'Filtrar perfumes por múltiples criterios' })
+  @ApiResponse({ status: 200, description: 'Lista de perfumes filtrados' })
+  async filtrarPerfumes(
+    @Query('genero') genero?: string,
+    @Query('fragancia') fragancia?: string,
+    @Query('tamaño') tamaño?: string,
+    @Query('precioMin') precioMin?: number,
+    @Query('precioMax') precioMax?: number
+  ) {
+    const filtros = { genero, fragancia, tamaño, precioMin, precioMax };
+    const data = await this.perfumeService.filtrarPerfumes(filtros);
     return { success: true, data, total: data.length };
   }
 
