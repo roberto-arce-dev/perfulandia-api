@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreatePerfumeDto } from './dto/create-perfume.dto';
 import { UpdatePerfumeDto } from './dto/update-perfume.dto';
 import { Perfume, PerfumeDocument } from './schemas/perfume.schema';
@@ -44,5 +44,56 @@ export class PerfumeService {
     if (!result) {
       throw new NotFoundException(`Perfume con ID ${id} no encontrado`);
     }
+  }
+
+  async findByCategoria(categoriaId: string): Promise<Perfume[]> {
+    const perfumes = await this.perfumeModel
+      .find({ categoria: new Types.ObjectId(categoriaId) })
+      .populate('categoria', 'nombre descripcion')
+      .sort({ createdAt: -1 });
+    return perfumes;
+  }
+
+  async filtrarPerfumes(filtros: {
+    genero?: string;
+    fragancia?: string;
+    tamaño?: string;
+    precioMin?: number;
+    precioMax?: number;
+  }): Promise<Perfume[]> {
+    const query: any = {};
+
+    // Filtrar por género si está presente
+    if (filtros.genero) {
+      query.genero = { $regex: filtros.genero, $options: 'i' };
+    }
+
+    // Filtrar por fragancia si está presente
+    if (filtros.fragancia) {
+      query.fragancia = { $regex: filtros.fragancia, $options: 'i' };
+    }
+
+    // Filtrar por tamaño si está presente
+    if (filtros.tamaño) {
+      query.tamaño = { $regex: filtros.tamaño, $options: 'i' };
+    }
+
+    // Filtrar por rango de precios
+    if (filtros.precioMin || filtros.precioMax) {
+      query.precio = {};
+      if (filtros.precioMin) {
+        query.precio.$gte = filtros.precioMin;
+      }
+      if (filtros.precioMax) {
+        query.precio.$lte = filtros.precioMax;
+      }
+    }
+
+    const perfumes = await this.perfumeModel
+      .find(query)
+      .populate('categoria', 'nombre descripcion')
+      .sort({ createdAt: -1 });
+    
+    return perfumes;
   }
 }

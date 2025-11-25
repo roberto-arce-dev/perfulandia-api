@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateResenaDto } from './dto/create-resena.dto';
 import { UpdateResenaDto } from './dto/update-resena.dto';
 import { Resena, ResenaDocument } from './schemas/resena.schema';
@@ -46,5 +46,23 @@ export class ResenaService {
     if (!result) {
       throw new NotFoundException(`Resena con ID ${id} no encontrado`);
     }
+  }
+
+  async findByPerfume(perfumeId: string): Promise<Resena[]> {
+    const resenas = await this.resenaModel
+      .find({ perfume: new Types.ObjectId(perfumeId) })
+      .populate('perfume', 'nombre marca precio imagen')
+      .populate('cliente', 'nombre avatar')
+      .sort({ createdAt: -1 });
+    return resenas;
+  }
+
+  async findByCliente(clienteId: string): Promise<Resena[]> {
+    const resenas = await this.resenaModel
+      .find({ cliente: new Types.ObjectId(clienteId) })
+      .populate('perfume', 'nombre marca precio imagen')
+      .populate('cliente', 'nombre avatar')
+      .sort({ createdAt: -1 });
+    return resenas;
   }
 }
