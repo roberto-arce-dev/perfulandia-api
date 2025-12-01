@@ -5,10 +5,14 @@ import { PedidoController } from './pedido.controller';
 import { UploadModule } from '../upload/upload.module';
 import { Pedido, PedidoSchema } from './schemas/pedido.schema';
 import { ClienteProfileModule } from '../cliente-profile/cliente-profile.module';
+import { PerfumeModule } from '../perfume/perfume.module';
+
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Pedido.name, schema: PedidoSchema }]),
     UploadModule,
+    ClienteProfileModule,
+    PerfumeModule,
   ],
   controllers: [PedidoController],
   providers: [PedidoService],
