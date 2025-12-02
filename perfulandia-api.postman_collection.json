@@ -1170,6 +1170,41 @@
       "key": "token",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoriaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "perfumeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "clienteId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pedidoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "resenaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "filename",
+      "value": "",
+      "type": "string"
     }
   ]
 }
