@@ -1,8 +1,18 @@
 {
   "info": {
     "name": "Perfulandia API",
-    "description": "Colección completa de Postman para Perfulandia API con Auth y Profiles",
+    "description": "Colección actualizada de Postman para Perfulandia API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
   },
   "item": [
     {
@@ -18,10 +28,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"usuario@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"CLIENTE\",\n  \"nombre\": \"Juan P\\u00e9rez\"\n}"
-            },
             "url": {
               "raw": "{{baseUrl}}/auth/register",
               "host": [
@@ -32,7 +38,18 @@
                 "register"
               ]
             },
-            "description": "Registrar nuevo usuario. Roles disponibles: CLIENTE"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"Password123\",\n  \"role\": \"CLIENTE\",\n  \"nombre\": \"Cliente Demo\",\n  \"telefono\": \"+51 900000000\",\n  \"direccion\": \"Av. Principal 123\",\n  \"preferencias\": [\n    \"cítrico\",\n    \"madera\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
           },
           "response": []
         },
@@ -46,10 +63,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"usuario@example.com\",\n  \"password\": \"password123\"\n}"
-            },
             "url": {
               "raw": "{{baseUrl}}/auth/login",
               "host": [
@@ -60,7 +73,18 @@
                 "login"
               ]
             },
-            "description": "Iniciar sesión y obtener token JWT"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
           },
           "response": []
         },
@@ -68,13 +92,7 @@
           "name": "Get My Profile",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
+            "header": [],
             "url": {
               "raw": "{{baseUrl}}/auth/profile",
               "host": [
@@ -84,8 +102,7 @@
                 "auth",
                 "profile"
               ]
-            },
-            "description": "Obtener información del usuario autenticado (requiere token)"
+            }
           },
           "response": []
         },
@@ -93,13 +110,7 @@
           "name": "Get All Users (Admin)",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
+            "header": [],
             "url": {
               "raw": "{{baseUrl}}/auth/users",
               "host": [
@@ -109,58 +120,20 @@
                 "auth",
                 "users"
               ]
-            },
-            "description": "Listar todos los usuarios del sistema (solo ADMIN)"
+            }
           },
           "response": []
         }
-      ],
-      "description": "Endpoints de autenticación (registro, login, perfil de usuario)"
+      ]
     },
     {
-      "name": "Upload Image",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "file",
-              "type": "file",
-              "src": [],
-              "description": "Imagen a subir (JPG, PNG, etc.) - Máximo 5MB"
-            }
-          ]
-        },
-        "url": {
-          "raw": "{{baseUrl}}/upload/image",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "upload",
-            "image"
-          ]
-        },
-        "description": "Sube una imagen al servidor y genera un thumbnail automáticamente"
-      },
-      "response": [
+      "name": "Upload",
+      "item": [
         {
-          "name": "Upload exitoso",
-          "originalRequest": {
+          "name": "Upload Image",
+          "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": []
-                }
-              ]
-            },
             "url": {
               "raw": "{{baseUrl}}/upload/image",
               "host": [
@@ -170,239 +143,25 @@
                 "upload",
                 "image"
               ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Imagen a subir (JPG, PNG, etc.) - Máximo 5MB"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
             }
           },
-          "status": "Created",
-          "code": 201,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "body": "{\n  \"message\": \"Imagen subida exitosamente\",\n  \"imagen\": \"uploads/1700000000000-imagen.jpg\",\n  \"imagenThumbnail\": \"uploads/thumbnails/thumb-1700000000000-imagen.jpg\"\n}"
+          "response": []
         }
       ]
-    },
-    {
-      "name": "Upload por Entidad",
-      "item": [
-        {
-          "name": "Upload Perfume Image",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": [],
-                  "description": "Imagen para Perfume (JPG, PNG, etc.) - Máximo 5MB"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/perfume/{{id}}/upload-image",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "perfume",
-                "{{id}}",
-                "upload-image"
-              ]
-            },
-            "description": "Sube una imagen y la asocia al Perfume especificado. Requiere autenticación."
-          },
-          "response": [
-            {
-              "name": "Upload exitoso",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": []
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/perfume/507f1f77bcf86cd799439011/upload-image",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "perfume",
-                    "507f1f77bcf86cd799439011",
-                    "upload-image"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Imagen subida y asociada exitosamente\",\n  \"data\": {\n    \"perfume\": {\n      \"_id\": \"507f1f77bcf86cd799439011\",\n      \"imagen\": \"uploads/1700000000000-imagen.jpg\",\n      \"imagenThumbnail\": \"uploads/thumbnails/thumb-1700000000000-imagen.jpg\"\n    },\n    \"upload\": {\n      \"url\": \"uploads/1700000000000-imagen.jpg\",\n      \"thumbnailUrl\": \"uploads/thumbnails/thumb-1700000000000-imagen.jpg\"\n    }\n  }\n}"
-            }
-          ]
-        },
-        {
-          "name": "Upload Categoria Image",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": [],
-                  "description": "Imagen para Categoria (JPG, PNG, etc.) - Máximo 5MB"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/categoria/{{id}}/upload-image",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "categoria",
-                "{{id}}",
-                "upload-image"
-              ]
-            },
-            "description": "Sube una imagen y la asocia al Categoria especificado. Requiere autenticación."
-          },
-          "response": [
-            {
-              "name": "Upload exitoso",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "Bearer {{token}}",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": []
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/categoria/507f1f77bcf86cd799439011/upload-image",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "categoria",
-                    "507f1f77bcf86cd799439011",
-                    "upload-image"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"success\": true,\n  \"message\": \"Imagen subida y asociada exitosamente\",\n  \"data\": {\n    \"categoria\": {\n      \"_id\": \"507f1f77bcf86cd799439011\",\n      \"imagen\": \"uploads/1700000000000-imagen.jpg\",\n      \"imagenThumbnail\": \"uploads/thumbnails/thumb-1700000000000-imagen.jpg\"\n    },\n    \"upload\": {\n      \"url\": \"uploads/1700000000000-imagen.jpg\",\n      \"thumbnailUrl\": \"uploads/thumbnails/thumb-1700000000000-imagen.jpg\"\n    }\n  }\n}"
-            }
-          ]
-        }
-      ],
-      "description": "Endpoints para subir y asociar imágenes a entidades específicas: Perfume, Categoria"
-    },
-    {
-      "name": "Servir Imágenes",
-      "item": [
-        {
-          "name": "Get Image",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3002/uploads/{{filename}}",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3002",
-              "path": [
-                "uploads",
-                "{{filename}}"
-              ]
-            },
-            "description": "Obtiene una imagen subida previamente"
-          },
-          "response": []
-        },
-        {
-          "name": "Get Thumbnail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3002/uploads/thumbnails/{{filename}}",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "3002",
-              "path": [
-                "uploads",
-                "thumbnails",
-                "{{filename}}"
-              ]
-            },
-            "description": "Obtiene un thumbnail generado automáticamente"
-          },
-          "response": []
-        }
-      ],
-      "description": "Endpoints para servir imágenes y thumbnails"
     },
     {
       "name": "ClienteProfile (Profiles)",
@@ -421,9 +180,9 @@
                 "cliente-profile",
                 "me"
               ]
-            },
-            "description": "Obtener mi ClienteProfile (requiere rol CLIENTE)"
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Update My Profile",
@@ -435,10 +194,6 @@
                 "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Nombre Actualizado\",\n  \"telefono\": \"+51 987654321\"\n}"
-            },
             "url": {
               "raw": "{{baseUrl}}/cliente-profile/me",
               "host": [
@@ -449,8 +204,17 @@
                 "me"
               ]
             },
-            "description": "Actualizar mi ClienteProfile (requiere rol CLIENTE)"
-          }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cliente Demo\",\n  \"telefono\": \"+51 911111111\",\n  \"direccion\": \"Calle Falsa 123\",\n  \"preferencias\": [\n    \"cítrico\",\n    \"madera\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
         },
         {
           "name": "List All Profiles (Admin)",
@@ -465,9 +229,9 @@
               "path": [
                 "cliente-profile"
               ]
-            },
-            "description": "Listar todos los ClienteProfile (requiere rol ADMIN)"
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Get Profile by UserId (Admin)",
@@ -475,24 +239,168 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/cliente-profile/:userId",
+              "raw": "{{baseUrl}}/cliente-profile/{{userId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "cliente-profile",
-                ":userId"
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categoria",
+      "item": [
+        {
+          "name": "Crear Categoria",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categoria",
+              "host": [
+                "{{baseUrl}}"
               ],
-              "variable": [
-                {
-                  "key": "userId",
-                  "value": "",
-                  "description": "ID del usuario"
-                }
+              "path": [
+                "categoria"
               ]
             },
-            "description": "Obtener ClienteProfile por userId (requiere rol ADMIN)"
-          }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Cítricos\",\n  \"tipo\": \"fragancia\",\n  \"descripcion\": \"Aromas frescos y brillantes\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Categorias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categoria",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categoria"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Categoria por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categoria/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categoria",
+                "{{categoriaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Categoria",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categoria/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categoria",
+                "{{categoriaId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descripcion\": \"Actualización de descripción\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Categoria",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categoria/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categoria",
+                "{{categoriaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Categoria Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categoria/{{categoriaId}}/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categoria",
+                "{{categoriaId}}",
+                "upload-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Imagen de la categoría"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -500,16 +408,58 @@
       "name": "Perfume",
       "item": [
         {
+          "name": "Crear Perfume",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfume",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Light Blue\",\n  \"marca\": \"Dolce & Gabbana\",\n  \"fragancia\": \"Cítrica\",\n  \"tamaño\": 100,\n  \"genero\": \"unisex\",\n  \"precio\": 95.5,\n  \"stock\": 30,\n  \"categoria\": \"{{categoriaId}}\",\n  \"descripcion\": \"Aroma fresco perfecto para el verano.\",\n  \"imagen\": \"https://example.com/perfumes/light-blue.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Perfumes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfume",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Perfumes por Categoría",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
+            "header": [],
             "url": {
               "raw": "{{baseUrl}}/perfume/categoria/{{categoriaId}}",
               "host": [
@@ -520,8 +470,7 @@
                 "categoria",
                 "{{categoriaId}}"
               ]
-            },
-            "description": "Filtrar perfumes por categoría"
+            }
           },
           "response": []
         },
@@ -529,44 +478,501 @@
           "name": "Filtrar Perfumes",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
+            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/perfume/filtros?genero={{genero}}&fragancia={{fragancia}}&tamaño={{tamaño}}&precioMin={{precioMin}}&precioMax={{precioMax}}",
+              "raw": "{{baseUrl}}/perfume/filtros",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "perfume",
-                "filtros?genero={{genero}}&fragancia={{fragancia}}&tamaño={{tamaño}}&precioMin={{precioMin}}&precioMax={{precioMax}}"
+                "filtros"
+              ],
+              "query": [
+                {
+                  "key": "genero",
+                  "value": "hombre"
+                },
+                {
+                  "key": "fragancia",
+                  "value": "cítrica"
+                },
+                {
+                  "key": "tamaño",
+                  "value": "100"
+                },
+                {
+                  "key": "precioMin",
+                  "value": "50"
+                },
+                {
+                  "key": "precioMax",
+                  "value": "150"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Perfume por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/{{perfumeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "{{perfumeId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Perfume",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/{{perfumeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "{{perfumeId}}"
               ]
             },
-            "description": "Filtrar perfumes por múltiples criterios"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": 105.0,\n  \"stock\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Perfume",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/{{perfumeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "{{perfumeId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Perfume Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfume/{{perfumeId}}/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "perfume",
+                "{{perfumeId}}",
+                "upload-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Imagen del perfume"
+                }
+              ]
+            }
           },
           "response": []
         }
-      ],
-      "description": "Endpoints específicos de Perfume"
+      ]
+    },
+    {
+      "name": "Cliente",
+      "item": [
+        {
+          "name": "Crear Cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cliente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"email\": \"cliente@correo.com\",\n  \"telefono\": \"+51 977777777\",\n  \"direccion\": \"Av. Siempre Viva 742\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cliente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cliente/{{clienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Cliente",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cliente/{{clienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente",
+                "{{clienteId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"+51 988888888\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cliente/{{clienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Cliente Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cliente/{{clienteId}}/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cliente",
+                "{{clienteId}}",
+                "upload-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Imagen del cliente"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pedido",
+      "item": [
+        {
+          "name": "Crear Pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedido",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido"
+              ]
+            },
+            "description": "Si no se envía cliente, se usará el profile asociado al token",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"perfume\": \"{{perfumeId}}\",\n      \"cantidad\": 1,\n      \"precio\": 95.5\n    }\n  ],\n  \"total\": 95.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Pedidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedido",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedido/{{pedidoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido",
+                "{{pedidoId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Pedido",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pedido/{{pedidoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido",
+                "{{pedidoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"enviado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Pedido",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedido/{{pedidoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido",
+                "{{pedidoId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Pedido Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedido/{{pedidoId}}/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedido",
+                "{{pedidoId}}",
+                "upload-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Comprobante o imagen del pedido"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Reseña",
       "item": [
         {
-          "name": "Reseñas por Perfume",
+          "name": "Crear Reseña",
           "request": {
-            "method": "GET",
+            "method": "POST",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
+            "url": {
+              "raw": "{{baseUrl}}/resena",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"perfume\": \"{{perfumeId}}\",\n  \"cliente\": \"{{clienteId}}\",\n  \"puntuacion\": 5,\n  \"comentario\": \"Excelente fijación y proyección\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Reseñas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/resena",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Réseñas por Perfume",
+          "request": {
+            "method": "GET",
+            "header": [],
             "url": {
               "raw": "{{baseUrl}}/resena/perfume/{{perfumeId}}",
               "host": [
@@ -577,19 +983,192 @@
                 "perfume",
                 "{{perfumeId}}"
               ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Réseñas por Cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/resena/cliente/{{clienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "cliente",
+                "{{clienteId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Reseña por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/resena/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "{{resenaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Reseña",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resena/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "{{resenaId}}"
+              ]
             },
-            "description": "Obtener todas las reseñas de un perfume"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"puntuacion\": 4,\n  \"comentario\": \"Buen aroma pero poca duración\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Reseña",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/resena/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "{{resenaId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Reseña Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/resena/{{resenaId}}/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resena",
+                "{{resenaId}}",
+                "upload-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Imagen asociada a la reseña"
+                }
+              ]
+            }
           },
           "response": []
         }
-      ],
-      "description": "Endpoints específicos de Reseña"
+      ]
+    },
+    {
+      "name": "Servir Imágenes",
+      "item": [
+        {
+          "name": "Get Image",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseStaticUrl}}/uploads/{{filename}}",
+              "host": [
+                "{{baseStaticUrl}}"
+              ],
+              "path": [
+                "uploads",
+                "{{filename}}"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Thumbnail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseStaticUrl}}/uploads/thumbnails/{{filename}}",
+              "host": [
+                "{{baseStaticUrl}}"
+              ],
+              "path": [
+                "uploads",
+                "thumbnails",
+                "{{filename}}"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3002/api",
+      "value": "http://localhost:3003/api",
+      "type": "string"
+    },
+    {
+      "key": "baseStaticUrl",
+      "value": "http://localhost:3003",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
       "type": "string"
     }
   ]

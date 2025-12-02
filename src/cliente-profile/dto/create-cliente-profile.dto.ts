@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateClienteProfileDto {
@@ -20,6 +20,7 @@ export class CreateClienteProfileDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsArray()
+  @IsString({ each: true })
   preferencias?: string[];
 
 }
